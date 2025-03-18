@@ -1,0 +1,95 @@
+1. Tables & Attributes (SQLite3-Compatible MVP Version)
+
+Owner Table (Tracks cafe owners)
+- owner_id (PK, AUTOINCRIMENT)
+- name (TEXT)
+- phone_number (TEXT)
+- role (TEXT) check (role in ('owner', 'co-owner', 'manager'))
+
+Customers Table (Tracks café customers)
+- customer_id (PK, AUTOINCREMENT)
+- name (TEXT)
+- phone_number (TEXT)
+
+Orders Table (Tracks customer orders)
+- order_id (PK, AUTOINCREMENT)
+- customer_id (FK → Customers)
+- table_id (FK → Tables)
+- employee_id (FK → Employees)
+- order_date (TIMESTAMP, DEFAULT: CURRENT_TIMESTAMP)
+- total_amount (REAL)
+- status (TEXT: Pending, Completed)
+
+Order_Items Table (Tracks menu items in an order)
+- order_item_id (PK, AUTOINCREMENT)
+- order_id (FK → Orders)
+- menu_item_id (FK → Menu)
+- quantity (INTEGER)
+- price (REAL)
+
+Menu Table (List of café menu items)
+- menu_item_id (PK, AUTOINCREMENT)
+- category_id (FK → Categories)
+- name (TEXT)
+- price (REAL)
+
+Category Table (Categories for menu items)
+- category_id (PK, AUTOINCREMENT)
+- name (TEXT: Coffee, Pastries, Snacks, Desserts)
+
+Tables Table (Tracks physical tables in the café)
+- table_id (PK, AUTOINCREMENT)
+- table_number (INTEGER, UNIQUE)
+- status (TEXT: Available, Occupied)
+
+Employees Table (Tracks café employees)
+- employee_id (PK, AUTOINCREMENT)
+- name (TEXT)
+- role (TEXT: Waiter, Chef, Cashier)
+
+Payments Table (Tracks order payments)
+- payment_id (PK, AUTOINCREMENT)
+- order_id (FK → Orders)
+- amount (REAL)
+- method (TEXT: Cash, Card)
+
+Customer feedback Table (Tracks customer feedback)
+- feedback_id (PK, AUTOINCREMENT)
+- customer_id (INT)
+- feedback (TEXT)
+- rating (INT: CHECK(rating btw 1 and 5))
+- FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+
+2. Relationships
+- Customers ↔ Orders: A customer can place multiple orders.
+- Orders ↔ Order_Items: An order contains multiple menu items.
+- Orders ↔ Payments: Each order has one payment.
+- Menu ↔ Category: A menu item belongs to a category.
+- Orders ↔ Employees: Orders are handled by employees (e.g., waiters).
+- Orders ↔ Tables: Orders are linked to café tables.
+
+3. Menu Items
+
+Coffee:
+- Espresso
+- Cappuccino
+- Latte
+- Americano
+
+Pastries:
+- Croissant
+- Muffin
+- Danish
+- Chocolate Cake
+
+Snacks:
+- Fries
+- Nachos
+- Garlic Bread
+- Onion Rings
+
+Desserts:
+- Cheesecake
+- Brownie
+- Ice Cream
+- Apple Pie
