@@ -1,10 +1,8 @@
-1. Tables & Attributes (SQLite3-Compatible MVP Version)
-
 Owner Table (Tracks cafe owners)
-- owner_id (PK, AUTOINCRIMENT)
+- owner_id (PK, AUTOINCREMENT)
 - name (TEXT)
 - phone_number (TEXT)
-- role (TEXT) check (role in ('owner', 'co-owner', 'manager'))
+- role (TEXT) CHECK (role IN ('owner', 'co-owner', 'manager'))
 
 Customers Table (Tracks café customers)
 - customer_id (PK, AUTOINCREMENT)
@@ -15,6 +13,7 @@ Orders Table (Tracks customer orders)
 - order_id (PK, AUTOINCREMENT)
 - customer_id (FK → Customers)
 - table_id (FK → Tables)
+- num_customers (FK → Tables)
 - employee_id (FK → Employees)
 - order_date (TIMESTAMP, DEFAULT: CURRENT_TIMESTAMP)
 - total_amount (REAL)
@@ -40,35 +39,41 @@ Category Table (Categories for menu items)
 Tables Table (Tracks physical tables in the café)
 - table_id (PK, AUTOINCREMENT)
 - table_number (INTEGER, UNIQUE)
+- num_customers (INTEGER)
 - status (TEXT: Available, Occupied)
 
 Employees Table (Tracks café employees)
 - employee_id (PK, AUTOINCREMENT)
 - name (TEXT)
+- phone_number (TEXT)
 - role (TEXT: Waiter, Chef, Cashier)
+
+Payment Methods Table (Stores available payment methods)
+- payment_method_id (PK, AUTOINCREMENT)
+- method_name (TEXT: Cash, Card, Online Payment)
 
 Payments Table (Tracks order payments)
 - payment_id (PK, AUTOINCREMENT)
 - order_id (FK → Orders)
 - amount (REAL)
-- method (TEXT: Cash, Card)
+- payment_method_id (FK → Payment Methods)
 
-Customer feedback Table (Tracks customer feedback)
+Customer Feedback Table (Tracks customer feedback)
 - feedback_id (PK, AUTOINCREMENT)
-- customer_id (INT)
+- customer_id (FK → Customers)
 - feedback (TEXT)
-- rating (INT: CHECK(rating btw 1 and 5))
-- FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+- rating (INTEGER CHECK(rating BETWEEN 1 AND 5))
 
-2. Relationships
+Relationships
 - Customers ↔ Orders: A customer can place multiple orders.
 - Orders ↔ Order_Items: An order contains multiple menu items.
 - Orders ↔ Payments: Each order has one payment.
+- Payments ↔ Payment Methods: Each payment uses one method.
 - Menu ↔ Category: A menu item belongs to a category.
 - Orders ↔ Employees: Orders are handled by employees (e.g., waiters).
 - Orders ↔ Tables: Orders are linked to café tables.
 
-3. Menu Items
+Menu Items
 
 Coffee:
 - Espresso
