@@ -21,6 +21,7 @@ Orders Table (Tracks customer orders)
 
 Order_Items Table (Tracks menu items in an order)
 - order_item_id (PK, AUTOINCREMENT)
+- item_name (Text: menu items)
 - order_id (FK → Orders)
 - category_id (FK → categories with menu items)
 - quantity (INTEGER)
