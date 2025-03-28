@@ -1,0 +1,21 @@
+CREATE TABLE Employees (
+    Employee_ID INT (PRIMARY KEY)
+    Name VARCHAR(100) NOT NULL,
+    Role VARCHAR(50),
+    Contact_Info VARCHAR(100),
+    Salary DECIMAL(10, 2),
+    Date_Joined DATE,
+    Email VARCHAR(100) UNIQUE
+);
+CREATE TABLE Categories (
+    Category_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Category_Name VARCHAR(100) NOT NULL,
+    Description TEXT
+);
+CREATE TABLE Customer_Feedback (
+    Feedback_ID INT PRIMARY KEY AUTO_INCREMENT,
+    Customer_ID INT,
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),
+    Comments TEXT,
+    Feedback_Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (Customer_ID) REFERENCES Customers(Customer_ID) 
