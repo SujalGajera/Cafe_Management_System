@@ -1,0 +1,82 @@
+
+1.View Menu – Customers browse the digital menu categorized by Coffee, Pastries, Snacks, and Desserts
+SELECT c.Category_Name, m.Menu_Name, m.Price
+FROM Menu_Items m
+INNER JOIN Categories c ON m.Category_ID = c.Category_ID;
+
+2. Place Order – Customers select items, specify quantity, and confirm the order
+SELECT o.Order_ID, c.Name AS Customer_Name, m.Menu_Name, oi.Quantity, oi.Instruction
+FROM Orders o
+INNER JOIN Customer c ON o.Customer_ID = c.Customer_ID
+INNER JOIN Order_Items oi ON o.Order_ID = oi.Order_ID
+INNER JOIN Menu_Items m ON oi.Menu_Item_ID = m.MenuItem_ID
+WHERE o.Status = 'Pending';
+
+3. Process Payments – Customers complete payments using Cash or Card
+SELECT p.Payment_ID, c.Name AS Customer_Name, pm.Method_Name, p.Amount
+FROM Payments p
+INNER JOIN Orders o ON p.Order_ID = o.Order_ID
+INNER JOIN Customer c ON o.Customer_ID = c.Customer_ID
+INNER JOIN Payment_Methods pm ON p.Payment_Method_ID = pm.Payment_Method_ID
+WHERE pm.Method_Name IN ('Cash', 'Card');
+
+4. Provide Feedback – Customers rate their experience and leave comments
+SELECT c.Name AS Customer_Name, f.Feedback, f.Rating
+FROM Customer_Feedback f
+LEFT JOIN Customer c ON f.Customer_ID = c.Customer_ID;
+
+5. Manage Employees – Owners add, edit, or remove employee details
+SELECT o.Name AS Owner_Name, e.Name AS Employee_Name, e.Role
+FROM Employees e
+LEFT JOIN Owner o ON e.Owner_ID = o.Owner_ID;
+
+6. Update Menu Items – Owners update the menu by adding new items or changing prices
+UPDATE Menu_Items
+SET Price = 5.0
+WHERE Menu_Name = 'Latte';
+
+7. Assign Roles – Managers assign roles (Waiter, Chef, Cashier) to employees
+UPDATE Employees
+SET Role = 'Chef'
+WHERE Name = 'Vaibhav Arora';
+
+8. Owner - Get the Total Revenue for the Café
+SELECT SUM(Total_Amount) AS Total_Revenue FROM Orders;
+
+9. Owner - Update Ownership Information
+UPDATE Owner
+SET Phone_No = '9876543210'
+WHERE Name = 'John Doe';
+
+10. Customer - Delete a Customer Who Requested Account Removal
+DELETE FROM Customer
+WHERE Name = 'Roohi Rathi';
+
+11. Order - Get All Orders Along with Their Items
+SELECT o.Order_ID, c.Name AS Customer_Name, m.Menu_Name, oi.Quantity, oi.Price
+FROM Orders o
+LEFT JOIN Order_Items oi ON o.Order_ID = oi.Order_ID
+LEFT JOIN Menu_Items m ON oi.Menu_Item_ID = m.MenuItem_ID
+LEFT JOIN Customer c ON o.Customer_ID = c.Customer_ID;
+
+12. Items - Best-Selling Items
+SELECT m.Menu_Name, SUM(oi.Quantity) AS Total_Sold
+FROM Order_Items oi
+LEFT JOIN Menu_Items m ON oi.Menu_Item_ID = m.MenuItem_ID
+GROUP BY m.Menu_Name
+ORDER BY Total_Sold DESC;
+
+13. Order - Track Order Status
+SELECT o.Order_ID, c.Name AS Customer_Name, o.Status
+FROM Orders o
+INNER JOIN Customer c ON o.Customer_ID = c.Customer_ID;
+
+14. Order - Cancel an Order
+UPDATE Orders
+SET Status = 'Cancelled'
+WHERE Order_ID = 2;
+
+15. Employee & Role Overview (with LEFT JOIN & Aliases)
+SELECT e.Name AS Employee_Name, e.Role, o.Name AS Owner_Name
+FROM Employees e
+LEFT JOIN Owner o ON e.Owner_ID = o.Owner_ID;

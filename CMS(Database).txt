@@ -1,0 +1,228 @@
+Cafe Management System: 
+
+Table:
+
+create table Owner (
+	Owner_ID integer primary key,
+	Name text not null,
+	Phone_No text unique,
+	Role text 
+);
+
+Values:
+
+insert into Owner (Name, Phone_No, Role) Values
+('Aakash Sharma','1234567890','Manager'),
+('John Doe','0987654321','Owner'),
+('Alice Smith','4561237890','Supervisor'),
+('Emma Watson','9898985936','Manager'),
+('Rohan Mishra','1234509876','Owner');
+
+Table2:
+
+create table Customer (
+	Customer_ID integer primary key,
+	Name text not null,
+	Phone_No text unique,
+	Email_ID text
+);
+
+Values2:
+
+insert into Customer (Name, Phone_No, Email_Id) Values
+('Neel Bansal', '2124346567', 'neel1@gmail.com'),
+('Rahul Patel', '9898989898', 'rahul2@gmail.com'),
+('Yubraj Thapa', '9509509502', 'yubraj@gmail.com'),
+('Roohi Rathi', '7897897890', 'roohi@gmail.com'),
+('Akshara Goenka', '45678993210', 'akshara@gmail.com');
+
+Table3:
+
+create table Categories (
+	Category_ID integer primary key,
+	Category_Name text not null
+);
+
+Values3:
+
+insert into Categories (Category_Name) Values
+('Coffee'),
+('Pastries'),
+('Snacks'),
+('Desserts');
+
+Table4:
+
+create table Payment_Methods (
+	Payment_Method_ID integer primary key,
+	Method_Name text not null
+);
+
+Values4:
+
+insert into Payment_Methods (Method_Name) Values
+('Cash'),
+('Card'),
+('Online Payment');
+
+Table5:
+
+create table Tables (
+	Table_ID integer primary key,
+	Table_No text not null,
+	Num_Customers integer,
+	Status text
+);
+
+Values5:
+
+insert into Tables (Table_No, Num_Customers, Status) Values
+('T1', 4, 'Available'),
+('T2', 2, 'Occupied'),
+('T3', 6, 'Reserved'),
+('T4', 4, 'Available'),
+('T5', 2, 'Occupied');
+
+Table6:
+
+create table Employees (
+	Employee_ID integer primary key,
+	Name text not null,
+	Phone_No text,
+	Role text,
+	Owner_ID integer,
+	foreign key (Owner_ID) references Owner(Owner_ID)
+);
+
+Values6:
+
+insert into Employees (Name, Phone_No, Role, Owner_ID) Values
+('Sonali Kapadia', '2223334444', 'Waiter', 1),
+('Sabrina Carpenter', '5556667777', 'Chef', 2),
+('Mohit Raina', '8889990000', 'Cashier', 1),
+('Vaibhav Arora', '1112223333', 'Waiter', 3),
+('Chandler Bing', '4445556666', 'Cashier', 2);
+
+Table7:
+
+create table Menu_Items (
+	MenuItem_ID integer primary key,
+	Category_ID integer,
+	Menu_Name text not null,
+	Price decimal not null,
+	foreign key (Category_ID) references Categories(Category_ID) 
+);
+
+Values7:
+
+insert into Menu_Items (Category_ID, Menu_Name, Price) Values
+(1, 'Espresso', 3.5),
+(1, 'Cappuccino', 4.0),
+(1, 'Latte', 4.5),
+(1, 'Americano', 3.8),
+(2, 'Croissant', 2.5),
+(2, 'Muffin', 2.0),
+(2, 'Danish', 3.0),
+(2, 'Chocolate Cake', 3.5),
+(3, 'Fries', 2.5),
+(3, 'Nachos', 3.0),
+(3, 'Garlic Bread', 2.8),
+(3, 'Onion Rings', 2.8),
+(4, 'Cheesecake', 4.5),
+(4, 'Brownie', 3.5),
+(4, 'Ice Cream', 2.5),
+(4, 'Apple Pie', 3.0);
+
+Table8:
+
+create table Orders (
+	Order_ID integer primary key,
+	Customer_ID integer,
+	Table_ID integer,
+	Num_Customers integer,
+	Employee_ID integer,
+	Order_Date date,
+	Total_Amount decimal,
+	Status text,
+	foreign key (Customer_ID) references Customer(Customer_ID),
+	foreign key (Table_ID) references Tables(Table_ID),
+	foreign key (Employee_ID) references Employees(Employee_ID)
+);
+
+Values8:
+
+insert into Orders (Customer_ID, Table_ID, Num_Customers, Employee_ID, Order_Date, Total_Amount, Status) values
+(1, 1, 2, 1, '2025-03-30', 10.5, 'Completed'),
+(2, 2, 2, 2, '2025-03-30', 15.0, 'Pending'),
+(3, 3, 4, 3, '2025-03-30', 20.0, 'Completed'),
+(4, 4, 3, 4, '2025-03-30', 18.0, 'In Progress'),
+(5, 5, 2, 5, '2025-03-30', 12.5, 'Completed');
+
+Table9:
+
+create table Order_Items (
+	Order_Item_ID integer primary key,
+	Order_ID integer,
+	Menu_Item_ID integer,
+	Quantity integer,
+	Price Decimal,
+	Instruction text,
+	foreign key (Order_ID) references Orders(Order_ID),
+	foreign key (Menu_Item_ID) references Menu_Items(Menu_Item_ID)
+);
+
+Values9:
+
+insert into Order_Items (Order_ID, Menu_Item_ID, Quantity, Price, Instructions) Values
+(1, 1, 1, 3.5, 'No sugar'),
+(2, 2, 1, 4.0, 'Extra hot'),
+(3, 3, 2, 5.0, 'Add caramel'),
+(4, 4, 1, 3.0, 'No whipped cream'),
+(5, 5, 2, 10.0, 'Gluten-free');
+
+Taable10:
+
+create table Payments (
+	Payment_ID integer primary key,
+	Order_ID integer,
+	Amount decimal,
+	Payment_Method_ID integer,
+	foreign key (Order_ID) references Orders(Order_ID),
+	foreign key (Payment_Method_ID) references Payment_Methods(Payment_Method_ID)
+);
+
+Values10:
+
+insert into Payments (Order_ID, Amount, Payment_Method_ID) Values
+(1, 10.5, 1),
+(2, 15.0, 3),
+(3, 20.0, 2),
+(4, 18.0, 1),
+(5, 12.5, 2);
+
+Table11:
+
+create table Customer_Feedback (
+	Feedback_ID integer primary key,
+	Customer_ID integer,
+	Feedback text,
+	Rating integer,
+	foreign key (Customer_ID) references Customer(Customer_ID)
+);
+
+Values11:
+
+insert into Customer_Feedback (Customer_ID, Feedback, Rating) Values
+(1, 'Great coffee!', 5),
+(2, 'Loved the cheesecake.', 4),
+(3, 'Service was a bit slow.', 3),
+(4, 'Nice ambiance.', 4),
+(5, 'Would visit again!', 5);
+
+
+
+alter table Order_Items
+add column Instructions text;
+
+
+
